@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tasklane - a colourful Kanban task board">
+  <title>Tasklane | My Board</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Tasklane home"><span class="brand-mark">T</span>tasklane</a>
+      <div class="profile-chip" aria-label="Guest account"><span class="avatar">G</span><span>Guest board</span></div>
+    </header>
+
+    <section class="board-intro" aria-labelledby="board-title">
+      <div>
+        <p class="eyebrow">YOUR WORKSPACE</p>
+        <h1 id="board-title">My board</h1>
+        <p class="intro-copy">A clear view of what you’re working on.</p>
+      </div>
+      <button class="button button-primary" id="openTaskForm" type="button"><span aria-hidden="true">＋</span> Add task</button>
+    </section>
+
+    <section class="summary-grid" aria-label="Board summary">
+      <article class="summary-card"><span class="summary-label">Total tasks</span><strong id="totalCount">0</strong></article>
+      <article class="summary-card"><span class="summary-label">Completed</span><strong id="completedCount">0</strong></article>
+      <article class="summary-card summary-overdue"><span class="summary-label">Overdue</span><strong id="overdueCount">0</strong></article>
+    </section>
+
+    <section class="board" aria-label="Kanban task board">
+      <section class="board-column todo-column" data-status="todo" aria-labelledby="todo-heading">
+        <header class="column-heading"><h2 id="todo-heading">To Do</h2><span class="column-count" id="count-todo">0</span></header>
+        <div class="task-list" data-task-list="todo"></div>
+      </section>
+      <section class="board-column progress-column" data-status="in_progress" aria-labelledby="progress-heading">
+        <header class="column-heading"><h2 id="progress-heading">In Progress</h2><span class="column-count" id="count-in_progress">0</span></header>
+        <div class="task-list" data-task-list="in_progress"></div>
+      </section>
+      <section class="board-column review-column" data-status="in_review" aria-labelledby="review-heading">
+        <header class="column-heading"><h2 id="review-heading">In Review</h2><span class="column-count" id="count-in_review">0</span></header>
+        <div class="task-list" data-task-list="in_review"></div>
+      </section>
+      <section class="board-column done-column" data-status="done" aria-labelledby="done-heading">
+        <header class="column-heading"><h2 id="done-heading">Done</h2><span class="column-count" id="count-done">0</span></header>
+        <div class="task-list" data-task-list="done"></div>
+      </section>
+    </section>
+    <p class="prototype-note" id="connectionStatus" role="status" aria-live="polite">Connecting to your board…</p>
+  </main>
+
+  <dialog class="modal" id="taskDialog" aria-labelledby="taskDialogTitle">
+    <form id="taskForm" class="modal-card">
+      <div class="modal-heading"><div><p class="eyebrow">MAKE A PLAN</p><h2 id="taskDialogTitle">Add a task</h2></div><button class="icon-button" type="button" data-close="taskDialog" aria-label="Close">×</button></div>
+      <label class="field-label" for="taskTitle">Title <span class="required">*</span></label>
+      <input id="taskTitle" name="title" maxlength="100" required placeholder="What needs to get done?">
+      <label class="field-label" for="taskDescription">Description <span class="optional">Optional</span></label>
+      <textarea id="taskDescription" name="description" rows="3" placeholder="Add a few details..."></textarea>
+      <div class="form-row">
+        <div><label class="field-label" for="taskStatus">Status</label><select id="taskStatus" name="status"><option value="todo">To Do</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="done">Done</option></select></div>
+        <div><label class="field-label" for="taskPriority">Priority</label><select id="taskPriority" name="priority"><option value="normal">Normal</option><option value="low">Low</option><option value="high">High</option></select></div>
+      </div>
+      <label class="field-label" for="taskDueDate">Due date <span class="optional">Optional</span></label>
+      <input id="taskDueDate" name="dueDate" type="date">
+      <div class="modal-actions"><button class="button button-quiet" type="button" data-close="taskDialog">Cancel</button><button class="button button-primary" type="submit">Create task</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="detailsDialog" aria-labelledby="detailsTitle">
+    <section class="modal-card">
+      <div class="modal-heading"><div><p class="eyebrow">TASK DETAILS</p><h2 id="detailsTitle">Task</h2></div><button class="icon-button" type="button" data-close="detailsDialog" aria-label="Close">×</button></div>
+      <p class="details-description" id="detailsDescription"></p>
+      <div class="details-meta"><span id="detailsPriority"></span><span id="detailsDueDate"></span><label class="status-control">Status <select id="detailsStatus"><option value="todo">To Do</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="done">Done</option></select></label></div>
+      <div class="comments-section"><h3>Comments <span id="commentCount">0</span></h3><div class="comment-list" id="commentList"></div>
+        <form id="commentForm" class="comment-form"><label class="sr-only" for="commentInput">Write a comment</label><input id="commentInput" maxlength="500" placeholder="Write a comment..." required><button class="button button-primary" type="submit">Post</button></form>
+      </div>
+      <div class="modal-actions"><button class="button button-danger" id="deleteTask" type="button">Delete task</button><button class="button button-quiet" id="editTask" type="button">Edit task</button><button class="button button-quiet" type="button" data-close="detailsDialog">Close</button></div>
+    </section>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
