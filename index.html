@@ -11,7 +11,10 @@
   <main class="app-shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Tasklane home"><span class="brand-mark">T</span>tasklane</a>
-      <div class="profile-chip" aria-label="Guest account"><span class="avatar">G</span><span>Guest board</span></div>
+      <div class="topbar-actions">
+        <button class="button button-quiet team-manage-button" id="openTeamDialog" type="button">Manage team</button>
+        <div class="profile-chip" aria-label="Guest account"><span class="avatar">G</span><span>Guest board</span></div>
+      </div>
     </header>
 
     <section class="board-intro" aria-labelledby="board-title">
@@ -27,6 +30,11 @@
       <article class="summary-card"><span class="summary-label">Total tasks</span><strong id="totalCount">0</strong></article>
       <article class="summary-card"><span class="summary-label">Completed</span><strong id="completedCount">0</strong></article>
       <article class="summary-card summary-overdue"><span class="summary-label">Overdue</span><strong id="overdueCount">0</strong></article>
+    </section>
+
+    <section class="team-strip" aria-label="Team members">
+      <div><p class="eyebrow">YOUR TEAM</p><div class="team-member-list" id="teamMemberList"><span class="team-empty">Add team members to assign tasks.</span></div></div>
+      <button class="text-button" id="teamQuickAdd" type="button">＋ Add member</button>
     </section>
 
     <section class="board" aria-label="Kanban task board">
@@ -63,6 +71,9 @@
       </div>
       <label class="field-label" for="taskDueDate">Due date <span class="optional">Optional</span></label>
       <input id="taskDueDate" name="dueDate" type="date">
+      <label class="field-label" for="taskAssignees">Assignees <span class="optional">Optional</span></label>
+      <select id="taskAssignees" name="assignees" multiple size="4" aria-describedby="assigneeHint"></select>
+      <p class="field-hint" id="assigneeHint">Hold Ctrl (Windows) or Command (Mac) to select more than one.</p>
       <div class="modal-actions"><button class="button button-quiet" type="button" data-close="taskDialog">Cancel</button><button class="button button-primary" type="submit">Create task</button></div>
     </form>
   </dialog>
@@ -71,11 +82,26 @@
     <section class="modal-card">
       <div class="modal-heading"><div><p class="eyebrow">TASK DETAILS</p><h2 id="detailsTitle">Task</h2></div><button class="icon-button" type="button" data-close="detailsDialog" aria-label="Close">×</button></div>
       <p class="details-description" id="detailsDescription"></p>
+      <div class="details-assignees" id="detailsAssignees"></div>
       <div class="details-meta"><span id="detailsPriority"></span><span id="detailsDueDate"></span><label class="status-control">Status <select id="detailsStatus"><option value="todo">To Do</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="done">Done</option></select></label></div>
       <div class="comments-section"><h3>Comments <span id="commentCount">0</span></h3><div class="comment-list" id="commentList"></div>
         <form id="commentForm" class="comment-form"><label class="sr-only" for="commentInput">Write a comment</label><input id="commentInput" maxlength="500" placeholder="Write a comment..." required><button class="button button-primary" type="submit">Post</button></form>
       </div>
       <div class="modal-actions"><button class="button button-danger" id="deleteTask" type="button">Delete task</button><button class="button button-quiet" id="editTask" type="button">Edit task</button><button class="button button-quiet" type="button" data-close="detailsDialog">Close</button></div>
+    </section>
+  </dialog>
+
+  <dialog class="modal" id="teamDialog" aria-labelledby="teamDialogTitle">
+    <section class="modal-card">
+      <div class="modal-heading"><div><p class="eyebrow">WORKING TOGETHER</p><h2 id="teamDialogTitle">Manage your team</h2></div><button class="icon-button" type="button" data-close="teamDialog" aria-label="Close">×</button></div>
+      <p class="team-dialog-copy">Add people to this board and assign them to tasks. Team members are labels for this guest board; they do not sign in separately.</p>
+      <form id="teamMemberForm" class="team-member-form">
+        <div><label class="field-label" for="memberName">Name</label><input id="memberName" maxlength="50" placeholder="e.g. Alex Morgan" required></div>
+        <div><label class="field-label" for="memberColor">Avatar colour</label><input id="memberColor" type="color" value="#4e79cf" aria-label="Avatar colour"></div>
+        <button class="button button-primary" type="submit">Add</button>
+      </form>
+      <div class="managed-team-list" id="managedTeamList"></div>
+      <div class="modal-actions"><button class="button button-quiet" type="button" data-close="teamDialog">Done</button></div>
     </section>
   </dialog>
 
