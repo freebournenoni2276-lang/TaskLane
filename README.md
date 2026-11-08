@@ -1,7 +1,7 @@
 # Tasklane
 Tasklane is a polished Kanban task board built for the Next Play Games Software Development internship assessment. It helps guests organise work across four workflow stages, keep track of deadlines, and add comments to tasks.
 
-# Live demo: https://tasklane-eta.vercel.app/
+Live demo: https://tasklane-eta.vercel.app/
 
 # Features
 - Four Kanban columns: To Do, In Progress, In Review, and Done
